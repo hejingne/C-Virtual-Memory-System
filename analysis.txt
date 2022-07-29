@@ -1,0 +1,65 @@
+/* addr-simpleloop.ref */
+Counts:
+  Instructions 120412
+  Loads 50092
+  Stores 10066
+  Modifies 10006
+
+number of Instructions access:  120412
+number of Data access:  70164
+number of unique Instruction pages:    7
+number of unique Data pages:   2511
+
+
+/* addr-repeatloop.ref */
+Counts:
+  Instructions 662155
+  Loads 120435
+  Stores 30290
+  Modifies 24
+
+number of Instructions access:  662155
+number of Data access:  150749
+number of unique Instruction pages:    23
+number of unique Data pages:   76
+
+
+/* addr-matmul.ref */
+Counts:
+  Instructions 24283604
+  Loads 7371149
+  Stores 1170623
+  Modifies 40030
+
+number of Instructions access:  24283604
+number of Data access:  8581802
+number of unique Instruction pages:    32
+number of unique Data pages:   961
+
+
+/* addr-blocked.ref */
+Counts:
+  Instructions 24615577
+  Loads 4425078
+  Stores 1241078
+  Modifies 40030
+
+number of Instructions access:  24615577
+number of Data access:  5706186
+number of unique Instruction pages:    32
+number of unique Data pages:   961
+
+
+/* Analysis */
+In each of the provided traces, it is one of the Instruction pages (page 0x108000) that is accessed the most out of all accessed pages
+that means each provided program refer to its own instructions the most often out of all memory accesses.
+Simpleloop.c accesses one particular data page the most (page 0x1fff000000) via Storing or Loading due to the data storing or loading of
+the array allocated in the heap (or stack) which is the variable ptr[i] (or a[i]). Its Instruction pages are located close to each other
+while its data pages are more distributed.
+Repeatloop.c accesses more instruction pages than simpleloop.c and interestingly there isn't a particular data page it accesses the most
+instead it accesses multiple data pages by the same number of access (2560 accesses) via storing for the heap-allocated array (data[i]).
+Matmul.c accesses more instruction pages by more distinct number of accesses, and it accesses three data pages the most (pages 0x30a000, 0x5019000, 0x1fff000000)
+for variables A,B,C while making large amount of accesses to various data pages.
+Blocked.c accesses more instruction pages by more distinct number of accesses, and it accesses the same three data pages the most
+for variables A,B,C, what's more, when comparing the same data page, it accesses a page more frequently than Matmul.c does
+(i.e. blocked.c accesses 0x5189000 6656 times v.s. 6432 times by matmul.c).
